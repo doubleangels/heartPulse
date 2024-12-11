@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>heartPulse</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.sentry-cdn.com/d5d282ebb82705aa2ff5a71b7e2c1bff.min.js" crossorigin="anonymous"></script>
     <style>
         [x-cloak] {
             display: none;
@@ -32,12 +33,19 @@
     <main class="container mx-auto px-4 mt-8"></main>
 
     <script>
+
+        // Sentry Configuration
+        Sentry.onLoad(function () {
+            Sentry.init();
+        });
+
         // JSON Configuration
         const categories = [
             {
                 id: "category1",
                 title: "I'm feeling...",
                 description: "Tap on an emotion to send a notification to Matt.",
+                action: "is feeling",
                 items: [
                     // Positive Emotions
                     { name: "Joy", img: "https://via.placeholder.com/100" },
@@ -114,6 +122,7 @@
                 id: "category2",
                 title: "I need/want...",
                 description: "Tap on an emotion to send a notification to Matt.",
+                action: "needs/wants",
                 items: [
                     { name: "Reassurance", img: "https://via.placeholder.com/100" },
                     { name: "Someone to Listen", img: "https://via.placeholder.com/100" },
@@ -125,6 +134,7 @@
                 id: "category3",
                 title: "Category 3",
                 description: "Tap on an emotion to send a notification to Matt.",
+                action: "Define a action.",
                 items: [
                     { name: "Button 1", img: "https://via.placeholder.com/100" },
                     { name: "Button 2", img: "https://via.placeholder.com/100" },
@@ -156,6 +166,7 @@
                             <button class="bg-gray-600 hover:bg-gray-500 text-white rounded-md p-4 flex flex-col items-center sendButton">
                                 <img src="${item.img}" alt="${item.name}" class="mb-2">
                                 <span>${item.name}</span>
+                                <span class="hidden">${category.action}</span>
                             </button>
                         `
                         )
@@ -178,12 +189,15 @@
                 const button = event.target.closest(".sendButton");
 
                 const spanElement = button.querySelector("span");
+                const spanAction = button.querySelector("span.hidden");
+                console.log(spanAction);
                 if (!spanElement) {
                     console.error("No span element found inside the button.");
                     return;
                 }
 
-                const itemName = spanElement.textContent;
+                const itemName = spanElement.textContent.toLowerCase();
+                const actionName = spanAction.textContent;
 
                 try {
                     const response = await fetch(webhookURL, {
@@ -192,7 +206,7 @@
                             "Content-Type": "application/json",
                         },
                         body: JSON.stringify({
-                            content: `Button clicked: ${itemName}`,
+                            content: `Maddy ${actionName} ${itemName}!`,
                         }),
                     });
 
