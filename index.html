@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>heartPulse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-800 text-gray-200 min-h-screen">
+    <!-- Toolbar -->
+    <header class="bg-gray-900 text-white shadow-lg py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <img src="public/ecg-heart.svg" alt="Logo" class="w-8 h-8 filter invert">
+                <h1 class="text-lg font-bold">heartPulse</h1>
+            </div>
+            <nav>
+                <a href="https://github.com/doubleangels/heartPulse"
+                    class="text-gray-400 hover:text-white px-4">Github</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container for Dynamic Content -->
+    <main class="container mx-auto px-4 mt-8"></main>
+
+    <script>
+        // JSON Configuration
+        const categories = [
+            {
+                id: "category1",
+                title: "I'm feeling...",
+                description: "Tap on an emotion to send a notification to Matt.",
+                items: [
+                    // Positive Emotions
+                    { name: "Joy", img: "https://via.placeholder.com/100" },
+                    { name: "Excitement", img: "https://via.placeholder.com/100" },
+                    { name: "Contentment", img: "https://via.placeholder.com/100" },
+                    { name: "Gratitude", img: "https://via.placeholder.com/100" },
+                    { name: "Optimism", img: "https://via.placeholder.com/100" },
+                    { name: "Anticipation", img: "https://via.placeholder.com/100" },
+                    { name: "Confidence", img: "https://via.placeholder.com/100" },
+                    { name: "Satisfaction", img: "https://via.placeholder.com/100" },
+                    { name: "Accomplishment", img: "https://via.placeholder.com/100" },
+                    { name: "Wonder", img: "https://via.placeholder.com/100" },
+                    { name: "Astonishment", img: "https://via.placeholder.com/100" },
+                    { name: "Affection", img: "https://via.placeholder.com/100" },
+                    { name: "Compassion", img: "https://via.placeholder.com/100" },
+                    { name: "Passion", img: "https://via.placeholder.com/100" },
+                    { name: "Devotion", img: "https://via.placeholder.com/100" },
+                    { name: "Love", img: "https://via.placeholder.com/100" },
+                    { name: "Pride", img: "https://via.placeholder.com/100" },
+                    { name: "Relief", img: "https://via.placeholder.com/100" },
+                    { name: "Euphoria", img: "https://via.placeholder.com/100" },
+                    { name: "Serenity", img: "https://via.placeholder.com/100" },
+                    { name: "Hope", img: "https://via.placeholder.com/100" },
+                    { name: "Amusement", img: "https://via.placeholder.com/100" },
+
+                    // Neutral or Mixed Emotions
+                    { name: "Sympathy", img: "https://via.placeholder.com/100" },
+                    { name: "Understanding", img: "https://via.placeholder.com/100" },
+                    { name: "Comfort", img: "https://via.placeholder.com/100" },
+                    { name: "Reassurance", img: "https://via.placeholder.com/100" },
+                    { name: "Safety", img: "https://via.placeholder.com/100" },
+                    { name: "Amazement", img: "https://via.placeholder.com/100" },
+                    { name: "Curiosity", img: "https://via.placeholder.com/100" },
+                    { name: "Nostalgia", img: "https://via.placeholder.com/100" },
+                    { name: "Acceptance", img: "https://via.placeholder.com/100" },
+                    { name: "Ambivalence", img: "https://via.placeholder.com/100" },
+                    { name: "Surprise", img: "https://via.placeholder.com/100" },
+
+                    // Negative Emotions
+                    { name: "Loneliness", img: "https://via.placeholder.com/100" },
+                    { name: "Disappointment", img: "https://via.placeholder.com/100" },
+                    { name: "Frustration", img: "https://via.placeholder.com/100" },
+                    { name: "Embarrassment", img: "https://via.placeholder.com/100" },
+                    { name: "Guilt", img: "https://via.placeholder.com/100" },
+                    { name: "Humiliation", img: "https://via.placeholder.com/100" },
+                    { name: "Envy", img: "https://via.placeholder.com/100" },
+                    { name: "Suspicion", img: "https://via.placeholder.com/100" },
+                    { name: "Sorrow", img: "https://via.placeholder.com/100" },
+                    { name: "Grief", img: "https://via.placeholder.com/100" },
+                    { name: "Annoyance", img: "https://via.placeholder.com/100" },
+                    { name: "Resentment", img: "https://via.placeholder.com/100" },
+                    { name: "Rage", img: "https://via.placeholder.com/100" },
+                    { name: "Anxiety", img: "https://via.placeholder.com/100" },
+                    { name: "Worry", img: "https://via.placeholder.com/100" },
+                    { name: "Dread", img: "https://via.placeholder.com/100" },
+                    { name: "Contempt", img: "https://via.placeholder.com/100" },
+                    { name: "Revulsion", img: "https://via.placeholder.com/100" },
+                    { name: "Disdain", img: "https://via.placeholder.com/100" },
+                    { name: "Aversion", img: "https://via.placeholder.com/100" },
+                    { name: "Shock", img: "https://via.placeholder.com/100" },
+                    { name: "Despair", img: "https://via.placeholder.com/100" },
+                    { name: "Jealousy", img: "https://via.placeholder.com/100" },
+                    { name: "Irritation", img: "https://via.placeholder.com/100" },
+                    { name: "Betrayal", img: "https://via.placeholder.com/100" },
+                    { name: "Regret", img: "https://via.placeholder.com/100" },
+                    { name: "Insecurity", img: "https://via.placeholder.com/100" },
+                    { name: "Overwhelm", img: "https://via.placeholder.com/100" },
+                    { name: "Hopelessness", img: "https://via.placeholder.com/100" },
+                    { name: "Fear", img: "https://via.placeholder.com/100" },
+                    { name: "Helplessness", img: "https://via.placeholder.com/100" },
+                ],
+            },
+            {
+                id: "category2",
+                title: "I need/want...",
+                description: "Tap on an emotion to send a notification to Matt.",
+                items: [
+                    { name: "Reassurance", img: "https://via.placeholder.com/100" },
+                    { name: "Someone to Listen", img: "https://via.placeholder.com/100" },
+                    { name: "Alone Time", img: "https://via.placeholder.com/100" },
+                    { name: "Time with You", img: "https://via.placeholder.com/100" },
+                ],
+            },
+            {
+                id: "category3",
+                title: "Category 3",
+                description: "Tap on an emotion to send a notification to Matt.",
+                items: [
+                    { name: "Button 1", img: "https://via.placeholder.com/100" },
+                    { name: "Button 2", img: "https://via.placeholder.com/100" },
+                    { name: "Button 3", img: "https://via.placeholder.com/100" },
+                ],
+            }
+        ];
+
+
+
+        // Function to Render Categories Dynamically
+        function renderCategories(categories) {
+            const container = document.querySelector("main");
+
+            categories.forEach((category) => {
+                const categoryHtml = `
+        <div class="bg-gray-700 shadow-lg rounded-md mb-4">
+            <button
+                class="w-full text-left py-4 px-4 bg-gray-600 hover:bg-gray-500 rounded-t-md text-gray-200 font-medium"
+                onclick="toggleVisibility('${category.id}')">
+                <h2>${category.title}</h2>
+            </button>
+            <div id="${category.id}" class="hidden px-4 py-4 text-gray-300">
+                <p class="mb-4">${category.description}</p>
+                <div class="grid grid-cols-3 gap-4 mt-4">
+                    ${category.items
+                        .map(
+                            (item) => `
+                            <button class="bg-gray-600 hover:bg-gray-500 text-white rounded-md p-4 flex flex-col items-center sendButton">
+                                <img src="${item.img}" alt="${item.name}" class="mb-2">
+                                <span>${item.name}</span>
+                            </button>
+                        `
+                        )
+                        .join("")}
+                </div>
+            </div>
+        </div>
+    `;
+
+                container.insertAdjacentHTML("beforeend", categoryHtml);
+            });
+        }
+
+        // Function to send Discord webhooks
+        const webhookURL = 'https://discord.com/api/webhooks/1309125741081792603/Qh_qxB8w3NsK30InXot_VVEKvPvnTuEX1lqblntj_7u0DpEzP5QUMT-fO8M-wd2rb9sZ';
+
+        // Add a click event listener to the main container
+        document.querySelector("main").addEventListener("click", async (event) => {
+            if (event.target.closest(".sendButton")) {
+                const button = event.target.closest(".sendButton");
+
+                const spanElement = button.querySelector("span");
+                if (!spanElement) {
+                    console.error("No span element found inside the button.");
+                    return;
+                }
+
+                const itemName = spanElement.textContent;
+
+                try {
+                    const response = await fetch(webhookURL, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            content: `Button clicked: ${itemName}`,
+                        }),
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.statusText}`);
+                    }
+                } catch (error) {
+                    console.error("Failed to send message:", error);
+                }
+            }
+        });
+
+
+        // Function to Toggle Visibility of a Category
+        function toggleVisibility(id) {
+            const element = document.getElementById(id);
+            element.classList.toggle("hidden");
+        }
+
+        // Render Categories on Page Load
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCategories(categories);
+        });
+    </script>
+</body>
+
+</html>
